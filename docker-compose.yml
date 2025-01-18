@@ -15,9 +15,7 @@ services:
     depends_on:
       - zookeeper
     environment:
-      # KAFKA_ADVERTISED_HOST_NAME: kafka # Use the service name as the advertised host
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      # KAFKA_CREATE_TOPICS: "input:3:1,output:3:1" # topic-name:partitions:replicas
       KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:29092,PLAINTEXT_C://0.0.0.0:9093,PLAINTEXT_L://0.0.0.0:9092,
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://broker:29092,PLAINTEXT_L://localhost:9092,PLAINTEXT_C://broker:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_L:PLAINTEXT,PLAINTEXT_C:PLAINTEXT

@@ -1,0 +1,27 @@
+[
+    {
+      "name": "Ataşehir Store",
+      "lat": 40.9923307,
+      "lng": 29.1244229
+    },
+    {
+      "name": "Novada Store",
+      "lat": 40.986106,
+      "lng": 29.1161293
+    },
+    {
+      "name": "Beylikdüzü Store",
+      "lat": 41.0066851,
+      "lng": 28.6552262
+    },
+    {
+      "name": "Ortaköy Store",
+      "lat": 41.055783,
+      "lng": 29.0210292
+    },
+    {
+      "name": "Caddebostan Store",
+      "lat": 40.9632463,
+      "lng": 29.0630908
+    }
+]

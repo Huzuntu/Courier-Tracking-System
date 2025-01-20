@@ -116,3 +116,7 @@ A message with the total distance traveled by the courier.
   {
   "message": "Courier with ID: 1, is not found in the state store"
   }
+## Testing the API Endpoints
+- Use a tool like Postman or curl to send requests to the API.
+- To log a location, send a POST request to http://localhost:8084/api/couriers/log with a JSON body.
+- To retrieve the total travel distance of a courier, send a GET request to http://localhost:8084/api/couriers/distance-travelled/{id} with the appropriate courier ID.

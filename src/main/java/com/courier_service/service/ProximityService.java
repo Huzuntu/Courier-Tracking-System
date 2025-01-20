@@ -52,10 +52,10 @@ public class ProximityService
             }
         }
 
-        // Cleanup old entries beyond a certain timeframe, e.g., 10 minutes
-        storeEntries = storeEntries.stream()
-                .filter(entry -> Duration.between(entry.getEntryTime(), LocalDateTime.now()).toMinutes() <= 10)
-                .collect(Collectors.toList());
+        // Cleanup old entries if needed
+        // storeEntries = storeEntries.stream()
+        //         .filter(entry -> Duration.between(entry.getEntryTime(), LocalDateTime.now()).toMinutes() <= 10)
+        //         .collect(Collectors.toList());
 
         return storeEntries;
     }

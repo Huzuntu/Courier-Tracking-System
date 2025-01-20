@@ -4,6 +4,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.stereotype.Service;
 
 import com.courier_service.model.courier.AggregatedCourierData;
@@ -14,16 +15,16 @@ import com.courier_service.model.courier.AggregatedCourierData;
 @Service
 public class StateStoreService 
 {
-    private KafkaStreams _kafkaStreams;
+    private final StreamsBuilderFactoryBean factoryBean;
 
     /**
      * Constructs a StateStoreService with KafkaStreams instance.
      *
-     * @param kafkaStreams    KafkaStreams instance to interact with the state store.
+     * @param factoryBean    Factory bean instance to interact with the state store.
      */
-    public StateStoreService(KafkaStreams kafkaStreams)
+    public StateStoreService(StreamsBuilderFactoryBean factoryBean) 
     {
-        this._kafkaStreams = kafkaStreams;
+        this.factoryBean = factoryBean;
     }
 
     /**
@@ -32,10 +33,15 @@ public class StateStoreService
      * @param courierId   The ID of the courier.
      * @return            The aggregated data for the courier.
      */
-    public AggregatedCourierData getAggregatedData(Integer courierId) {
-        ReadOnlyKeyValueStore<Integer, AggregatedCourierData> store = _kafkaStreams.store(
-            StoreQueryParameters.fromNameAndType("courier-data-store",
-                                            QueryableStoreTypes.keyValueStore())
+    public AggregatedCourierData getAggregatedData(Integer courierId) 
+    {
+        KafkaStreams kafkaStreams = factoryBean.getKafkaStreams();
+        if (kafkaStreams == null) {
+            throw new IllegalStateException("KafkaStreams instance is not yet initialized");
+        }
+
+        ReadOnlyKeyValueStore<Integer, AggregatedCourierData> store = kafkaStreams.store(
+            StoreQueryParameters.fromNameAndType("courier-data-store", QueryableStoreTypes.keyValueStore())
         );
         return store.get(courierId);
     }

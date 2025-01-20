@@ -1,6 +1,7 @@
 services:
   zookeeper:
     image: wurstmeister/zookeeper
+    container_name: courier-zookeeper
     ports:
       - "2181:2181"
     networks:
@@ -8,7 +9,7 @@ services:
 
   broker:
     image: wurstmeister/kafka
-    container_name: brokerKafka
+    container_name: courier-broker
     ports:
       - "9092:9092"
       - "9093:9093"
@@ -28,7 +29,7 @@ services:
 
   kafka-ui:
     image: provectuslabs/kafka-ui
-    container_name: kafka-UAY
+    container_name: courier-kafkaUI
     networks:
       - local-kafka
     depends_on: 

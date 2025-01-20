@@ -17,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class StoreLoader 
+public class StoreLoader
 {
-    private final StoreRepository _storeRepository;
-    
+    private final StoreRepository storeRepository;
+
     /**
-     * Loads store data from a JSON file and saves it to the database.
+     * Loads store data from a JSON file and adds it to an in-memory store list.
      * If stores are already present, it does not add duplicates.
      *
      * @throws IOException If there's an error reading the JSON file.
@@ -41,13 +41,12 @@ public class StoreLoader
         ObjectMapper objectMapper = new ObjectMapper();
         List<Store> stores = objectMapper.readValue(inputStream, new TypeReference<List<Store>>() {});
 
-        // Checks if stores already exist in the database to avoid duplicates
+        // Adds stores to an in-memory store list, avoiding duplicates
         for (Store store : stores) 
         {
-            // This statement is for checking the duplicates of the stores
-            if (!_storeRepository.existsByName(store.getName())) 
+            if (!storeRepository.existsByName(store.getName())) 
             {
-                _storeRepository.save(store);
+                storeRepository.add(store);
             }
         }
     }

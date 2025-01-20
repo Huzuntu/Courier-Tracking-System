@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AggregatedCourierData {
+public class AggregatedCourierData 
+{
     private CourierLocation lastLocation;
     private double totalDistance;
     private List<StoreEntry> recentStoreEntries = new ArrayList<>();

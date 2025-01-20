@@ -5,12 +5,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import com.courier_service.model.courier.CourierLocation;
 import com.courier_service.model.store.Store;
 import com.courier_service.model.store.StoreEntry;
 import com.courier_service.repository.StoreRepository;
 import com.courier_service.utils.GeoUtils;
 
+@Service
 public class ProximityService 
 {
     private final StoreRepository _storeRepository;

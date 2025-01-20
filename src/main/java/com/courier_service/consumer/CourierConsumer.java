@@ -64,7 +64,7 @@ public class CourierConsumer {
                 {
                     return _courierService.processCourierData(courierId, newLocation, aggregatedData);
                 },
-                Materialized.<Integer, AggregatedCourierData, KeyValueStore<Bytes, byte[]>>as("courier-data-store")
+                Materialized.<Integer, AggregatedCourierData, KeyValueStore<Bytes, byte[]>>as("courier-data-stores")
                     .withKeySerde(Serdes.Integer())
                     .withValueSerde(new AggregatedCourierDataSerde())
             )

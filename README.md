@@ -50,18 +50,6 @@ The application consists of multiple components working together:
    ```bash
    docker-compose up -d
    ```
-3. **Database Configuration (MySQL):
-   Ensure you have MySQL running on your local machine and that the courier_tracking database exists. If not, you can create it using the following command:
-   ```bash
-   mysql -u root -p
-   CREATE DATABASE courier_tracking;
-   ```
-  You can also configure the database connection in the application.properties file with your MySQL details:
-   ```bash
-   spring.datasource.url=jdbc:mysql://localhost:3306/courier_tracking
-   spring.datasource.username=root
-   spring.datasource.password=password
-   ```
 3. **Run the Spring Boot Application:**
    Ensure that you have Java 17+ and Maven installed. From the root directory of the project, build and run the application:
    ```bash
@@ -75,7 +63,3 @@ The application consists of multiple components working together:
 
 1.	Once the Docker containers are running, you can access the Kafka UI at http://localhost:7777.
 2.	You can use the Kafka UI to monitor Kafka topics and see logs of courier events being published to the output topic.
-
-## Future Enhancements
-1.	Unit Testing: I will implement unit tests using JUnit and Mockito to ensure the reliability of the services.
-2.	API Security: I plan to add security layers such as OAuth2 or JWT authentication for protected endpoints.

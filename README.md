@@ -63,3 +63,56 @@ The application consists of multiple components working together:
 
 1.	Once the Docker containers are running, you can access the Kafka UI at http://localhost:7777.
 2.	You can use the Kafka UI to monitor Kafka topics and see logs of courier events being published to the output topic.
+
+## API Endpoints
+### Base URL
+
+The base URL for the API is:
+- **URL:** `(http://localhost:8084/api/couriers)`
+
+### 1. **Log Courier Location**
+
+- **URL:** `/log`
+- **Method:** `POST`
+- **Description:** Logs a courier's location by sending it to Kafka for processing.
+- **Request Body:**
+  - `courierId` (integer): Unique identifier for the courier.
+  - `lat` (double): Latitude of the courier’s current location.
+  - `lng` (double): Longitude of the courier’s current location.
+
+- **Example Request:**
+  ```json
+  {
+    "courierId": 1,
+    "lat": 40.730610,
+    "lng": -73.935242,
+  }
+- **Response:**
+A success message indicating the location was logged.
+- **Example Response:**
+  ```json
+  {
+  "message": "Location logged successfully"
+  }
+### 2. **Get Total Travel Distance**
+- **URL:** `/distance-travelled/{id}`
+- **Method:** `GET`
+- **Description:** Retrieves the total distance traveled by a courier based on the courier’s ID.
+- **Path Parameter:**
+  - `id` (integer): The unique ID of the courier for whom the total distance is to be retrieved.
+- **Example Request:**
+  ```
+  GET http://localhost:8080/api/couriers/distance-travelled/1
+- **Response:**
+A message with the total distance traveled by the courier.
+- **Example Response:**
+  ```json
+  {
+  "message": "Courier 1 has traveled a total distance of 1200.50 meters."
+  }
+- **Error Response:**
+  If the courier is not found in the state store:
+  ```json
+  {
+  "message": "Courier with ID: 1, is not found in the state store"
+  }

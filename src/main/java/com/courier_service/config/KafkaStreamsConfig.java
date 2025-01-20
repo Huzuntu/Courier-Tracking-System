@@ -25,7 +25,7 @@ public class KafkaStreamsConfig
     private String inputTopic = "input";
     private String outputTopic = "output";
 	
-	/**
+     /**
      * Configures Kafka Streams with the necessary properties to process data.
      *
      * @return KafkaStreamsConfiguration for Kafka Streams application.

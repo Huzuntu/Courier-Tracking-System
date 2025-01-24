@@ -18,9 +18,9 @@ This project is a RESTful web application developed in Java Spring Boot that pro
 - Spring Boot
 - Apache Kafka
 - Docker
-- GeoCalc Library (for distance calculations)
 - Spring Kafka (for Kafka integration)
 - Kafka Streams (for real-time data processing)
+- Swagger UI for easy API endpoint testing
 
 ## Project Architecture
 
@@ -69,7 +69,7 @@ The application consists of multiple components working together:
 
 The base URL for the API is:
 - **URL:** `(http://localhost:8084/api/couriers)`
-
+- **Swagger UI URL:** http://localhost:8084/swagger-ui.html
 ### 1. **Log Courier Location**
 
 - **URL:** `/log`

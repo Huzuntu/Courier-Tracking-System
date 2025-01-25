@@ -1,30 +1,28 @@
 package com.courier_service.utils;
 
-import com.grum.geocalc.Coordinate;
-import com.grum.geocalc.EarthCalc;
-import com.grum.geocalc.Point;
+public class GeoUtils {
+  private static final double EARTH_RADIUS_KM = 6372.8;
 
-public class GeoUtils 
-{
-    /**
-     * Calculates the distance between two geographical points (latitude and longitude).
-     * 
-     * @param lat1 Latitude of the first point.
-     * @param lng1 Longitude of the first point.
-     * @param lat2 Latitude of the second point.
-     * @param lng2 Longitude of the second point.
-     * @return Distance in meters between the two points.
-     */
-    public static double calculateDistance(double lat1, double lng1, double lat2, double lng2) 
-    {
-        Coordinate latCoord1 = Coordinate.fromDegrees(lat1);
-        Coordinate lngCoord1 = Coordinate.fromDegrees(lng1);
-        Point point1 = Point.at(latCoord1, lngCoord1);
+  /**
+   * Calculates the distance between two geographical points using the Haversine formula.
+   *
+   * @param lat1 Latitude of the first point.
+   * @param lon1 Longitude of the first point.
+   * @param lat2 Latitude of the second point.
+   * @param lon2 Longitude of the second point.
+   * @return Distance in kilometers between the two points.
+   */
+  public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    double dLat = Math.toRadians(lat2 - lat1);
+    double dLon = Math.toRadians(lon2 - lon1);
+    lat1 = Math.toRadians(lat1);
+    lat2 = Math.toRadians(lat2);
 
-        Coordinate latCoord2 = Coordinate.fromDegrees(lat2);
-        Coordinate lngCoord2 = Coordinate.fromDegrees(lng2);
-        Point point2 = Point.at(latCoord2, lngCoord2);
+    double a =
+        Math.pow(Math.sin(dLat / 2), 2)
+            + Math.pow(Math.sin(dLon / 2), 2) * Math.cos(lat1) * Math.cos(lat2);
+    double c = 2 * Math.asin(Math.sqrt(a));
 
-        return EarthCalc.haversine.distance(point1, point2); // Distance in meters
-    }
+    return EARTH_RADIUS_KM * c;
+  }
 }

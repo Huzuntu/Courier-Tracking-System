@@ -1,48 +1,71 @@
 package com.courier_service.service;
 
+import com.courier_service.model.courier.AggregatedCourierData;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.stereotype.Service;
 
-import com.courier_service.model.courier.AggregatedCourierData;
-
 /**
- * This service is responsible for interacting with Kafka's state store to retrieve aggregated courier data.
+ * This service is responsible for interacting with Kafka's state store to retrieve aggregated
+ * courier data.
  */
 @Service
-public class StateStoreService 
-{
-    private final StreamsBuilderFactoryBean factoryBean;
+public class StateStoreService implements SmartLifecycle {
+  private final StreamsBuilderFactoryBean factoryBean;
+  private ReadOnlyKeyValueStore<Integer, AggregatedCourierData> stateStore;
+  private boolean running = false;
 
-    /**
-     * Constructs a StateStoreService with KafkaStreams instance.
-     *
-     * @param factoryBean    Factory bean instance to interact with the state store.
-     */
-    public StateStoreService(StreamsBuilderFactoryBean factoryBean) 
-    {
-        this.factoryBean = factoryBean;
+  public StateStoreService(StreamsBuilderFactoryBean factoryBean) {
+    this.factoryBean = factoryBean;
+  }
+
+  @Override
+  public void start() {
+    KafkaStreams kafkaStreams = factoryBean.getKafkaStreams();
+    if (kafkaStreams == null) {
+      throw new IllegalStateException("KafkaStreams instance is not yet initialized");
     }
+    this.stateStore =
+        kafkaStreams.store(
+            StoreQueryParameters.fromNameAndType(
+                "courier-data-stores", QueryableStoreTypes.keyValueStore()));
+    this.running = true;
+  }
 
-    /**
-     * This function retrieves the aggregated data for a specific courier from the state store.
-     *
-     * @param courierId   The ID of the courier.
-     * @return            The aggregated data for the courier.
-     */
-    public AggregatedCourierData getAggregatedData(Integer courierId) 
-    {
-        KafkaStreams kafkaStreams = factoryBean.getKafkaStreams();
-        if (kafkaStreams == null) {
-            throw new IllegalStateException("KafkaStreams instance is not yet initialized");
-        }
+  @Override
+  public void stop() {
+    this.running = false;
+  }
 
-        ReadOnlyKeyValueStore<Integer, AggregatedCourierData> store = kafkaStreams.store(
-            StoreQueryParameters.fromNameAndType("courier-data-store", QueryableStoreTypes.keyValueStore())
-        );
-        return store.get(courierId);
+  @Override
+  public boolean isRunning() {
+    return this.running;
+  }
+
+  @Override
+  public int getPhase() {
+    return Integer.MAX_VALUE;
+  }
+
+  /**
+   * This function retrieves the total distance travelled for a specific courier from the state
+   * store.
+   *
+   * @param courierId The ID of the courier.
+   * @return The total distance travelled by the courier.
+   */
+  public double calculateDistanceForCourier(Integer courierId) {
+    if (!isRunning()) {
+      throw new IllegalStateException("StateStoreService is not running");
     }
+    AggregatedCourierData data = stateStore.get(courierId);
+    if (data == null) {
+      throw new IllegalArgumentException("Courier not found: " + courierId);
+    }
+    return data.getTotalDistance();
+  }
 }
